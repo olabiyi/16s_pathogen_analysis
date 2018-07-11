@@ -1,0 +1,1 @@
+D_6__Cryptosporidium,D_6__Giardia,D_7__Toxoplasma,D_1__Amoebozoa,D_4__Blastocystis,D_4__Euglenozoa,D_6__Babesia,D_6__Plasmodium,D_5__Trichomonas,D_8__Trypanosoma,D_6__Naegleria   

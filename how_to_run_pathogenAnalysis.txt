@@ -1,0 +1,64 @@
+#requirements for running pathogen analysis on my water samples
+
+#step 1
+#get all the pathogens sequences
+get_seq.sh
+what are you looking for?:
+pathogens
+
+Enter the full path to the file containing the comma separated list of what you looking for:
+/gpfs0/biores/users/gilloro/Biyi/pathogen_analysis/silva_human_pathogens.txt
+
+Enter the path to the OTU.biom file:
+/gpfs0/biores/users/gilloro/Biyi/community_analysis/water/05.open_ref_otus/bac_open_ref_otus/water_otu_table.biom
+
+Enter the path to the seqs_otus.txt file:
+/gpfs0/biores/users/gilloro/Biyi/community_analysis/water/05.open_ref_otus/bac_open_ref_otus/final_otu_map_mc2.txt
+
+Enter the path to the seqs.fna file:
+/gpfs0/biores/users/gilloro/Biyi/community_analysis/water/03.demultiplexed/bacteria_demultiplexed/non_chimeric_seqs.fna
+
+#step 2
+#get the sample names
+
+
+#get soil protist pathogenic sequences
+What are you looking for? :
+parasites
+Enter the full path to the file containing the comma separated list of what you looking for:
+/gpfs0/biores/users/gilloro/Biyi/pathogen_analysis/protozoa_pathogens2.txt
+Enter the path to the OTU.biom file:
+/gpfs0/biores/users/gilloro/Biyi/community_analysis/soil/05.open_ref_otus/protist_open_ref_otus/combined/otu_table_MC2.biom
+Enter the path to the seqs_otus.txt file:
+/gpfs0/biores/users/gilloro/Biyi/community_analysis/soil/05.open_ref_otus/protist_open_ref_otus/combined/final_otu_map_mc2.txt
+Enter the path to the seqs.fna file:
+/gpfs0/biores/users/gilloro/Biyi/community_analysis/soil/03.demultiplexed/protozoa_demultiplexed/non_chimeric_seqs.fna
+
+
+
+#step 3
+#blast the sequences
+ blast_sequences3.sh ${samples[*]}
+what are you searching for:
+pathogens
+Enter the full path to the list of what to search for:
+/gpfs0/biores/users/gilloro/Biyi/pathogen_analysis/human_pathogens_list.txt
+Enter the full path to the mapping file:
+/gpfs0/biores/users/gilloro/Biyi/community_analysis/water/00.mapping_file_validation/bacteria/corrected/water_pathogen_mapping_corrected.txt
+Enter the full path to the blast database:
+/gpfs0/biores/users/gilloro/Biyi/REF_SEQ_16s_microbial/refseq_16s
+Enter the full path to the fasta file of what you want to search for:
+/gpfs0/biores/users/gilloro/Biyi/community_analysis/water/09.pathogen_analysis/pathogens.fasta
+Enter the column name in your mapping file to be analysed:
+sample
+What will you like to call the file that will contain your final results together?
+result_together
+Which identity threshold do you want?
+options are 0 to 10 for 90 to 100% identity, respectively
+8
+
+#step 4
+#load pathogen_analysis_functions.R
+
+#step 5
+# the the necessary variables andtthen source the pathogen_analysis.R script
