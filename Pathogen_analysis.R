@@ -257,7 +257,4 @@ Matrix <- 'melon'
 species_otu_table <- combined_taxon_tables[[1]][[2]]
 #write the species taxon table to an excel file
 write.xlsx(x = t(species_otu_table), file = '../species_table.xlsx', sheetName = Matrix, col.names = T, row.names = T, append = T)
-#estimating diversity matrics such as chao1 
-pool <- poolaccum(t(species_taxon_table))
-summary(pool, display = "chao")
-qt_model<- estimateR(t(species_taxon_table))
+

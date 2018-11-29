@@ -1,4 +1,4 @@
-#pathogen analysis functions and library script
+#Functions for pathogen analysis
 #Author: Olabiyi Aderemi Obayomi
 #E-mail: obadbotanist@yahoo.com
 #created: February 2018
