@@ -14,7 +14,6 @@ Arcobacter cryaerophilus
 Arcobacter skirrowii
 Bacillus anthracis
 Bacillus circulans
-Bacillus flexus
 Bacillus weihenstephanensis
 Bacteroides fragilis
 Bartonella bacilliformis

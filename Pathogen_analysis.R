@@ -1,9 +1,9 @@
 #pathogen analysis script
 #Author: Olabiyi Aderemi Obayomi
 #E-mail: obadbotanist@yahoo.com
-#created Feb 2018
+#created: February 2018
 
-#remember to set your working directory to directory containing your results together and your mapping file
+#remember to set your working directory to the directory containing your results together and your mapping file
 ######################## set all necessary variables   ####################################
 
 #example of how to set the necessary variables
@@ -11,18 +11,19 @@ file_name <- "wash_bac_pathogen_analysis"
 independent_Variables <- c('WaterType', 'Plastic', 'Treatment', 'IrrigationType') 
 mapping_file <- 'fruit_wash_pathogens_mapping.txt'
 # true or false if plots should be made
-#I recommend sett it to false when you don't detect alot of pathogens in your samples
+#I recommend setting it to false when you don't detect alot of pathogens in your samples
 #for example when analysing for protists in the water and bacteria in the fruit puree
-#but set to true when you analysing bacteria in the soil
+#but set to true when you analysing bacteria pathogens in soil
 make_plots <- FALSE 
 Xlab <- c('Water Type','Plastic cover','Treatment', 'Irrigation Type')
 
-#load all the library and functions needed for the anlysis
+#source the libraries and functions needed for the analysis
 source('Pathogen_analysis_functions.R')
 
-# sample of character vector of blast files in the current working directory
+#Example of character vector of blast files in the current working directory
 #change to the directory with all the results together
 setwd('results_together/')
+
 #get the pathogen files arranged from the lowest to the highest number
 pathogen_files <- list.files() #get all the files in the current directory
 pathogen_files<- gsub(pattern = "__", 
@@ -36,13 +37,13 @@ Treatments <- c() #intialize an empty treament vector
 split_file_name<- strsplit(x = gsub(pattern = "final_", replacement = "", x = pathogen_files),
                            split = "_" )
 #loop over the split_file_name list of lists getting the first element of each list
-#and setting the respective treatment value to the rightful index in the vector
+#and setting the respective treatment value to the rightful index in the vector of
 #Treatments
 for (index in 1:length(pathogen_files)) {
   Treatments[index] = split_file_name[[index]][1]
 }
 
-#creating a list of list which will contain the outputs for the pathogen analysis
+#create a list of lists that will contain the outputs for the pathogen analysis
 Result_together <- vector(mode = "list",length = length(Treatments))
 
 #####################################################################################
@@ -61,11 +62,13 @@ names(Result_together) <- Treatments
 setwd('../')
 #turn warnings back on
 options(warn = 0)
-##########Get the frequency tables for all the taxon levels together##################
-#in a list called all_frequency_tables
-#sample taxonomic level vector
+
+##########Get the frequency tables for all the taxon levels together in a list called all_frequency_tables #
+
+#taxonomic level vector
 taxons <- c('genera','species', 'strains')
 all_frequency_tables <- vector(mode = "list",length = length(taxons))
+#combines the frequency tables for all the taxon levels
 for (index in 1:length(taxons)) {
   
   taxon_frequency_table <- combine_freq_tables(Treatments = Treatments,
@@ -99,6 +102,7 @@ detect[[index]]<- presence_absence(taxon_table = taxon_table,
                           variable = independent_Variables[index])
 }
 names(detect) <- independent_Variables
+
 #write the results to an excel file per independent variavle
 for (i in names(detect)){
 write.xlsx(x = detect[[i]], 
@@ -122,6 +126,7 @@ ord_tables <- vector(mode = "list",length = length(taxons))
 stats_table <- vector(mode = "list",length = length(taxons))
 stacked_stats_table <- vector(mode = "list",length = length(taxons))
 abund_table_norm <- vector(mode = "list",length = length(taxons))
+#nake plots for each taxon level
 for (taxon in 1:length(taxons)){
   #make ordanition plots - PCOA and NMDS and return dataframes with the principal components
   ord_tables[[taxon]] <-ordination_plots(taxon_table = combined_taxon_tables[["normalized_tables"]][[taxon]],
@@ -185,11 +190,14 @@ for (taxon in 1:length(taxons)){
   }
   
 }
-#nameing the lists to correspond to each taxon level
+#naming the lists to correspond to each taxon level
 names(ord_tables) <- taxons
 names(stats_table) <- taxons
 names(stacked_stats_table) <- taxons
 names(abund_table_norm) <- taxons
+
+
+
 
 ########################## make pathogen Heat map #########################################
 #get the raw table that belongs to
@@ -215,13 +223,11 @@ id<- rownames(x_norm.abund)[id]
 x_norm.abund <- x_norm.abund[id, ]
 
 #reorder the columns of a matrix
-#col.order <- c("UnIrrigated_clay", "PW+Clay", "TWW+Clay", "UnIrrigated_loam", "PW+Loam", "TWW+Loam", "UnIrrigated_loamSand", "PW+Loamy_sand", "TWW+Loamy_sand")
-#col.order <- c("UnIrrigated_clay", "PW-P", "PW+P", "TWW-P", "TWW+P")
+#example of a  vector to re-order the columns of the matrix
 col.order <- c("PW", "TWW","non-irrigated", "PW-P", "PW+P", "TWW-P", "TWW+P", "Blank",
                "PW+SD-P", "PW+SD+P", "TWW+SD-P", "TWW+SD+P", "TWW+SSD-P", "TWW+SSD+P")
 ordered_x_norm.abund <- x_norm.abund[,col.order]
-#rename the colums to represent the treatments the way you want them if need be
-#colnames(ordered_x_norm.abund) <- c("non-irrigated","PW-P","PW+P","TWW-P","TWW+P")
+
 
 
 #make heatmap of normalized otu table clustered which hclust with bray curtis distance
@@ -231,85 +237,27 @@ heatMap <- Heatmap(ordered_x_norm.abund,
         column_title = 'Treatment', 
         row_names_side = 'left', 
         column_title_side = 'bottom', 
-        #clustering_distance_columns = function(x) vegdist(x), 
         row_names_gp = gpar(fontface="bold.italic",cex=0.6), 
         column_names_gp = gpar(fontface="bold"), 
         heatmap_legend_param = list(title= 'Relative abundance'))
 
-#save the heatmap
-save(heatMap, file = '../raw_melon_heatmap.RData')
 
-#get the species taxon table
-species_otu_table <- combined_taxon_tables[[1]][[2]]
 
-#write the species taxon table to an excel file
-write.xlsx(x = t(species_otu_table), file = '../melon_species_table.xlsx', sheetName = 'melon', col.names = T, row.names = T, append = T)
+
 
 ############################################################################################
-
+}
 #turn-off all open devices
 dev.off()
 
-# species_relative<- sweep(species_otu_table, 1, rowSums(species_otu_table),'/')
-# #re-order factor levels
-# mtcars$cyl2 <- factor(mtcars$cyl, levels = c("6","4","8"))
-# #re-order decrete scale in ggplot2
-# ggplot(mtcars, aes(factor(cyl))) + 
-#   geom_bar() + 
-#   scale_x_discrete(limits=c(8,4,6))#this is where we re-order
-# 
-# #get the frequency for each pathogen detected
-# species_freq_table<- all_frequency_tables[[2]][1:3]
-
-###################plotting multiple complex heatmas on a page###########################
-#1.trying to use the mutipanelFigure package for multiple plots
-library('multipanelfigure') #load the package
-#create an empty figure
-figure <- multi_panel_figure(
-width = c(30,40,60),
-height = c(40,60,60,60),
-panel_label_type = "upper-roman") 
-
-#file the figure with your plots
-(figure %<>% fill_panel(
-water_heatmap,
-row = 1, column = 1))
-(figure %<>% fill_panel(
-barrier_heatmap,
-row = 1, column = 2))
-(figure %<>% fill_panel(
-wash_heatmap,
-row = 1, column = 3))
-figure
-
-
-
-#2. first convert to grob object the use ggarrage to plot and ararnge the heatmaps
-#convert a complex heatmap object to a grob object
-water_gb <- grid.grabExpr(draw(water_heatmap))
-is.grob(water_gb)#confirm that is a grob object
-#test to see it works
-grid.draw(water_gb)
-#barrier experiment
-barrier_gb<- grid.grabExpr(draw(barrier_heatmap))
-#soilType experiment
-soilType_gb <- grid.grabExpr(draw(soilType_heatmap))
-#fruit wash
-wash_gb <- grid.grabExpr(draw(wash_heatmap))
-#melon puree
-melon_gb <- grid.grabExpr(draw(melon_heatmap))
-
-#make multiple plots
-#barrier experiment plot
-ggarrange(water_gb,barrier_gb,wash_gb, nrow = 1, ncol = 3)
-
-#soiltype experiment plots
-ggarrange(water_gb,soilType_gb, nrow = 1, ncol = 2)
-
-
-
+#example string vector for the sheet nam in an excel file
+Matrix <- 'melon'
+#Estimating  alpha diversity
+#get the species taxon table
+species_otu_table <- combined_taxon_tables[[1]][[2]]
+#write the species taxon table to an excel file
+write.xlsx(x = t(species_otu_table), file = '../species_table.xlsx', sheetName = Matrix, col.names = T, row.names = T, append = T)
 #estimating diversity matrics such as chao1 
 pool <- poolaccum(t(species_taxon_table))
 summary(pool, display = "chao")
 qt_model<- estimateR(t(species_taxon_table))
-}
