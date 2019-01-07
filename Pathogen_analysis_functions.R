@@ -23,6 +23,7 @@ library('gtools')
 library('ComplexHeatmap') # mapping heat maps
 library('xlsx') #for writing to excel files
 library('data.table')
+library('magrittr')
 # make sure that you are using the correct architecture of java
 #i.e 64 bit java with 64 bit R version or 32 bit java with 32 bit R version
 library("rJava", lib.loc="~/R/win-library/3.4") #load rJava
@@ -380,6 +381,17 @@ make_taxon_tables <- function(samples,taxons,all_frequency_tables, method = 'log
   names(combined_taxon_tables)<- c('raw_tables', 'normalized_tables' )
   return(combined_taxon_tables)
 }
+subset_rows_from_single_column_dataframe <- function(data,rows_selection) {
+  #this function subsets rows from a dataframe with a single column
+  #and preserves it as a dataframe as opposed to a vector
+  #1. ~ data is your dataframe to be subsetted
+  #2. ~ row_selection is a vector of row names or numbers to be subsetted
+  library(magrittr)
+  final_dataframe <- t(data) %>%
+    subset(select = rows_selection) %>%
+    t() %>% as.data.frame()
+  return(final_dataframe)
+}
 
 #A function to get the independent variables from a dataframe
 get_independent_variables_df <- function(mapping_file, independent_variables){
@@ -466,38 +478,44 @@ presence_absence <- function(taxon_table, independent_variables.df, variable){
   return(result)
 }
 #function to make PCOA, NMDS and box plots for the pathogens
-ordination_plots <- function(taxon_table, mapping_file, independent_variables, label) {
-# function to make PCOA, NMDS and box plots for the pathogens from a taxon_table
-  # ~ taxon table - is a matrix or dataframe of the count of taxons per sample
-  # ~ mapping_file - is the metadata file containing each sample description
-  # ~ independent_variables - is a string vector or string specifying the 
+ordination_plots <- function(taxon_table, mapping_file, independent_variables) {
+  library(ggpubr)
+  library(vegan)
+  #taxon table is a matrix or dataframe of the count of taxons per sample - WITH SAMPLES
+  #COLUMNS AND OTUS AS ROWS
+  #mapping_file is the metadata file containing each sample description
+  #independent_variables is a string vector or string specifying the 
   #the independent variables in the supplied mapping file
-  # ~ label is a string that specifies the column in the mapping file for the points 
-  #on the ordination plots e.g 'sample'
+  # label is a string that specifies the column in the mapping file with point labels
+  #on the ordination plots
   
   #import your qiime formatted mapping file
+  
   map <- read.table( file = mapping_file, sep='\t', head=T, row.names=1, comment = '')
   
-  ##### making PCOA plots #######
+  #making PCOA plots
   taxon_table_t <- t(taxon_table) #transpose the OTU table
   #find the overlap
   common.ids <- intersect(rownames(map), rownames(taxon_table_t ))
   # get just the overlapping samples
   taxon_table_t <- taxon_table_t[common.ids,]
+  if(length(independent_variables) == 1){
+    map <- subset_rows_from_single_column_dataframe(data = map,rows_selection = common.ids)
+  }else{
   map <- map[common.ids,]
-  #covert to relative abundance
+  }
   taxon_norm <- sweep(taxon_table_t, 1, rowSums(taxon_table_t),'/')
-  #get the distance matrix between samples using the bray curtis distance metric 
+  #get the distance matrix between samples using bray curtis distance metric 
   d.bray <- vegdist(x = taxon_norm , method = "bray")
-  #calculate the principal coordinates
+  #calculate principal coordinates
   pc.bray <- cmdscale(d = d.bray, k=2)
-  colnames(pc.bray) <- c('PCoa1', 'PCoa2') #name the columns
+  colnames(pc.bray) <- c('PCO1', 'PCO2') #name the columns
   
   #preparing to make a biplot
   #First get a normalized version of the OTU table
-  # where each OTU's relative abundances sums to 1
+  # where each OTU's relative abundances sum to 1
   otus.norm <- sweep(taxon_table_t,2,colSums(taxon_table_t),'/')
-  # use matrix multiplication to calculate the weighted average of each taxon along each axis
+  # use matrix multiplication to calculated weighted average of each taxon along each axis
   wa <- t(otus.norm) %*% pc.bray
   colnames(wa) <- c('wa1', 'wa2')
   wa_stat.df <- data.frame(taxon= rownames(wa), wa1=wa[,'wa1'], wa2 = wa[,'wa2'])
@@ -506,39 +524,38 @@ ordination_plots <- function(taxon_table, mapping_file, independent_variables, l
   mds.bray <- metaMDS(taxon_norm)$points
   ##name the columns
   colnames(mds.bray) <- c('NMDS1', 'NMDS2')
-  
+
   #get the independent variables
   independent_variables.df <- subset(x = map, select = independent_variables)
   
   #create a PCOA stat dataframe
-  pca.stat.df <- data.frame(independent_variables.df,samples = rownames(pc.bray), PC1 = pc.bray[,'PCoa1'], PC2 = pc.bray[,'PCoa2'])
+  pca.stat.df <- data.frame(independent_variables.df,samples = rownames(pc.bray), PCO1 = pc.bray[,'PCO1'], PCO2 = pc.bray[,'PCO2'])
   #create NMDS sta data frame
   NMDS.stat.df <- data.frame(independent_variables.df,samples = rownames(mds.bray), NMDS1 = mds.bray[,'NMDS1'], NMDS2 = mds.bray[,'NMDS2'])
   #generate a statistics table for plotting and statistics
   stats_table <- cbind(independent_variables.df,taxon_norm)
   #plot the PCOA scatter plot
   for (variable in independent_variables) {
-    p<- ggscatter(data = pca.stat.df, x = 'PCoa1', y = 'PCoa2', 
-                  fill = variable, color = variable, size = 7,
-                  label = label)
+    print(pcoa<- ggscatter(data = pca.stat.df, x = 'PCO1', y = 'PCO2', 
+                  fill = variable, color = variable, size = 6))
     
-    #making a biplot - simply by adding the weighted average points to
+    #plotting bioplot - simply by adding the weighted average points to
     #the existing scatter plot
-    print(ggscatter(data = wa_stat.df, x = 'wa1', y = 'wa2',
-                    label = 'taxon', ggp = p))
- 
+    print(pcoa_w<-ggscatter(data = wa_stat.df, x = 'wa1', y = 'wa2',
+                    label = 'taxon', ggp = pcoa))
+
     
     #plot the NMDS scatter plot -ggp adds the plot to an existing ggplot
-    print(ggscatter(data = NMDS.stat.df, x = 'NMDS1', y = 'NMDS2', 
-                    fill = variable, color = variable, size = 5,
-                    label = label, ellipse = T))
+    print(nmds<-ggscatter(data = NMDS.stat.df, x = 'NMDS1', y = 'NMDS2', 
+                    fill = variable, color = variable, size = 6, ellipse = F))
     
     
   }
-  final_tables <- list(wa_stat.df, pca.stat.df, NMDS.stat.df, stats_table)
+  final_tables <- list(wa_stat.df, pca.stat.df, NMDS.stat.df, stats_table,pcoa,pcoa_w,nmds)
+  names(final_tables) <- c('taxa_weighted_average','pcoa_dataframe','nmds_dataframe','stats_table',
+                           'pcoa_plot','pcoa_biplot','nmds_plot')
   return(final_tables)
 }
-
 #function to stack your data from wide to long format
 Stack_data <- function(Data,lab_columns,num_of_numericVariables,col_num_of_numericVariables) {
   # ~ data - is the dataframe to stack

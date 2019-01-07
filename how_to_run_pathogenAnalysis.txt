@@ -1,15 +1,20 @@
-#requirements for running pathogen analysis 
+#Below are instructions on how to search for pathogens using the the scripts provided in this repository
+#please note that the scripts can also be used to search for anything within your OTU table
+#all you need is to feed it with the right database, sequences and correct labels.
+
+#Dependencies
 # Either installing QIIME 1.9.1 or getting the following scripts from that QIIME version
 # ~ extract_seqs_by_sample_id.py
 # ~ filter_taxa_from_otu_table.py
 # ~ biom
 # ~ filter_fasta.py
 
+#note - $> represents the bash comand prompt
 ##### step 1
-#get the pathogen sequences by running the get_seq.sh script as shown below
+#get the pathogens sequences by running the get_seq.sh script as shown below
 $>get_seq.sh
 
-#you will be prompted as follows - below I give an example of how to respond to the questions 
+#you will be prompted as follows - below I give an example on how to respond to the questions 
 
 what are you looking for?:
 pathogens
@@ -35,9 +40,9 @@ $>source get_samples.sh
 
 ##### step 3
 #blast the sequences
-$>blast_sequences3.sh ${samples[*]}
+$>blast_sequences.sh ${samples[*]}
 
-#you will be prompted as follows - below I give an example of how to respond to the questions
+#you will be prompted as follows - below I give an example on how to respond to the questions
 #in the example below I choose an identity threshold of 98% 
 
 what are you searching for:
@@ -65,14 +70,15 @@ options are 0 to 10 for 90 to 100% identity, respectively
 
 
 ################### Collate your results in R ###############################
+#note - R> represents the R command prompt
 #### step 4
-#load the function needed for collating the results in R
+#load the functions needed to collate the results in R
 
 R>source('pathogen_analysis_functions.R') 
 
 ##### step 5
 # set the necessary variables and then source the pathogen_analysis.R script
-#Please see the script for instructions on how to set the require variables
+#Please see the script for instructions on how to set the required variables
 
 
 
