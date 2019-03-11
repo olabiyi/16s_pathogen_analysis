@@ -261,10 +261,9 @@ proportion <- function(physeq){
   return(physeq)
 }
 #Rarefy
-randomsubsample <- function(physeq, smalltrim=0.15, replace=TRUE){
-  # Set the minimum value as the smallest library quantile, n`smalltrim` 
-  samplemin = sort(sample_sums(physeq))[-(1:floor(smalltrim*nsamples(physeq)))][1]
-  physeqr = rarefy_even_depth(physeq, samplemin, rngseed=TRUE,
+randomsubsample <- function(physeq, depth= min(colSums(physeq)), replace=TRUE){
+  library(phyloseq)
+  physeqr = rarefy_even_depth(physeq,depth, rngseed=TRUE,
                               replace=replace, trimOTUs=TRUE)
   return(physeqr)
 }
@@ -272,7 +271,7 @@ randomsubsample <- function(physeq, smalltrim=0.15, replace=TRUE){
 
 
 
-normalize_otu_table <- function(OTU_table, method='rarefy') {
+normalize_otu_table <- function(OTU_table, method='rarefy',depth=NULL) {
   #This function performs normalization on a given count otu table OTU_Table
   #Don't forget to load the libraries and the functions necessary 
   #a.k.a c('phyloseq','metagenomeSeq ','EdegeR', 'vegan')
@@ -280,7 +279,8 @@ normalize_otu_table <- function(OTU_table, method='rarefy') {
   # ~ method  - is a string specifying the normalization to be performed on the OTU_table
   #can either be c('proportion', 'RLE', 'logUQ','TMM', 'DESeqVS', 'CSS', 'rarefy')
   #it performs normalization by rarefying by default  
-  
+  library(phyloseq)
+  library(metagenomeSeq)
   
   #change OTU table into a phyloseq object or MRexperiment obj for metagenomeSeq 
   phylose_otu_table<- phyloseq(otu_table(OTU_table, taxa_are_rows = T))
@@ -315,7 +315,14 @@ normalize_otu_table <- function(OTU_table, method='rarefy') {
     
   }else if (method == 'rarefy'){
     #normalization by rarefying
-    otu_table.norm <- as.data.frame(randomsubsample(phylose_otu_table, replace = F))
+    depth <- depth
+    
+    if (is.null(depth)){
+      otu_table.norm <- as.data.frame(randomsubsample(phylose_otu_table, replace = F))
+    }else{
+      otu_table.norm <- as.data.frame(randomsubsample(phylose_otu_table, depth = depth, replace = F)) 
+    }
+    
     
   }else{
     print("incorrect option choosen: options are 'proportion', 'RLE', 'logUQ','TMM', 'DESeqVS', 'CSS', 'rarefy' ")
