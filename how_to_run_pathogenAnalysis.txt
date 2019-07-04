@@ -69,8 +69,10 @@ options are 0 to 10 for 90 to 100% identity, respectively
 
 
 
-################### Collate your results in R ###############################
+################### Collate your results in R  OR Python ###############################
+
 #note - R> represents the R command prompt
+######### In R
 #### step 4
 #load the functions needed to collate the results in R
 
@@ -78,8 +80,12 @@ R>source('pathogen_analysis_functions.R')
 
 ##### step 5
 # set the necessary variables and then source the pathogen_analysis.R script
-#Please see the script for instructions on how to set the required variables
+# Please see the script for instructions on how to set the required variables
 
+####### In Python
+# Make sure the pathogenAnalysisFunctions.py and Pathogen_analysis.py scripts are in the same working directory
+# Open the Pathogen_analysis.py scipt set the require input variable at the top of the script, then run.
+# Please make sure you have all the necessary modules installed. The script was tested on Python 3.6.8
 
 
 

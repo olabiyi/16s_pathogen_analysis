@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #Author: Olabiyi Aderemi Obayomi
-#email: obadbotanist@tahoo.com
+#email: obadbotanist@yahoo.com
 #created: February 2018
 
 # This script will get the sample names from a QIIME mapping file
