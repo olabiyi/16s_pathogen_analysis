@@ -6,7 +6,7 @@
 #the vegan package
 #if the package isn't already install it then load it
 if (!require('vegan')){ install.packages('vegan'); library('vegan')}
-#library('vegan')
+
 
 #get the pathogens species table
 species_table <- combined_taxon_tables$raw_tables$species

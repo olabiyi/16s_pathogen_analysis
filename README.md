@@ -12,6 +12,7 @@ In order to run the scripts in this repository, you will need to have the follow
 
 * R v3.4 and above   
 
+Please read the file 'how_to_run_pathogenAnalysis.txt' for instructions on how to run the analysis.
 
 If you find any of the scripts or files in this repository useful, please cite:   
 
