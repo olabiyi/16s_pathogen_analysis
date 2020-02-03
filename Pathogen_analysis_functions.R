@@ -26,8 +26,8 @@ library('data.table')
 library('magrittr')
 # make sure that you are using the correct architecture of java
 #i.e 64 bit java with 64 bit R version or 32 bit java with 32 bit R version
-library("rJava", lib.loc="~/R/win-library/3.4") #load rJava
-
+library("rJava") #load rJava
+library(tidyverse, quietly = TRUE)
 ##############################################################################################
 #load in the functions
 #main pathogen analysis function
@@ -374,7 +374,7 @@ make_taxon_tables <- function(samples,taxons,all_frequency_tables, method = 'log
   for (i in 1:length(taxons)){
     #otu tables
     taxon_tables[[i]]<- make_OTU_table(taxon_level = taxons[i],
-                                       samples = Treatments, 
+                                       samples = samples, 
                                        samples_column = 'Treatment', 
                                        frequency_column = 'freq', 
                                        all_frequency_tables = all_frequency_tables)
@@ -757,3 +757,18 @@ generate_abundance_tables1 <- function(independent_Variables,variable,taxon_tabl
   return(result) #return the stacked list
 }
 
+
+SE <- function(measure){sd(measure,  na.rm=TRUE)/sqrt(n())}
+
+create_mean_table <- function(category, data){ 
+  # Mean and Standard error
+  mean_table <- data %>%  
+    group_by(!!sym(category)) %>% 
+    summarise_if(.predicate = is.numeric, .funs = list(mean=mean), na.rm=TRUE)
+  SE_table <- data %>%  
+    group_by(!!sym(category)) %>% 
+    summarise_if(.predicate = is.numeric, .funs = list(SE=SE))                             
+  
+  inner_join(x=mean_table,y=SE_table,by=category)
+  
+}

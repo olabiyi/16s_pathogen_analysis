@@ -19,7 +19,7 @@
 #export PATH=/path/to/your/qiime/usr/local/bin/:$PATH
 #NCBI blast
 #export PATH=/path/to/your/ncbi-blast-2.7.1+/bin/:$PATH
-
+set -e
 source /path/to/your/.bashrc
 
 # Get the list of samples in a QIIME mapping file

@@ -1,0 +1,27 @@
+WB.1	WB.2	WB.3	WB.4	WB.5	WB.6	WB.7	WB.8	WB.9	WB.10	WB.11	WB.12	WB.13	WB.14	WB.15	WB.16	WB.17	WB.18
+Pseudomonas alcaligenes	649	0	6646	0	6967	98	652	3	4282	0	0	2	0	19	0	19	0	11
+Acinetobacter lwoffii	50	0	2	0	3	0	0	0	1	0	0	0	65	0	0	0	0	0
+Pseudomonas stutzeri	26	5	69	0	1	1	3	0	14	0	1	4	0	0	0	0	0	0
+Pseudomonas aeruginosa	11	1	43	0	20	0	20	2	44	0	2	0	0	1	0	0	0	2
+Aeromonas hydrophila	0	19	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0
+Aeromonas caviae	0	2	0	1	0	0	0	0	0	0	0	0	1	0	0	0	0	0
+Bacillus weihenstephanensis	0	2	4	0	1	0	0	0	0	0	0	1	0	0	0	0	0	0
+Salmonella enterica	0	1	0	0	0	0	1	1	13	1	1	0	0	0	0	1	0	0
+Enterococcus casseliflavus	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Stenotrophomonas maltophilia	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Acinetobacter baumannii	0	0	1	0	0	0	0	0	2	0	0	0	0	0	0	0	0	0
+Klebsiella pneumoniae	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Legionella pneumophila	0	0	1	0	6	1	0	0	0	0	0	15	1	34	0	138	0	4
+Staphylococcus capitis	0	0	1	0	0	0	2	0	7	0	0	0	0	2	0	14	0	1
+Streptococcus oralis	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	5	1	0
+Streptococcus pseudopneumoniae	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Staphylococcus hominis	0	0	0	0	7	0	1	0	2	0	0	0	0	0	0	3	0	0
+Bacillus flexus	0	0	0	0	1	0	0	0	1	0	0	0	1	0	0	0	3	0
+Streptococcus salivarius	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	1	0	0
+Enterobacter cloacae	0	0	0	0	0	1	0	0	0	0	0	0	12	0	0	0	0	0
+Pseudomonas otitidis	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0
+Nocardia abscessus	0	0	0	0	0	0	1	0	0	0	0	0	1	0	0	0	0	0
+Haemophilus parainfluenzae	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	2	0	0
+Enterococcus faecalis	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0
+Ralstonia insidiosa	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0
+Streptococcus sinensis	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0

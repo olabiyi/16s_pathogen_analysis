@@ -3,7 +3,7 @@
 #Author: Olabiyi Aderemi Obayomi
 #email: obadbotanist@yahoo.com
 #created: February 2018
-
+set -e
 # This script will get the sample names from a QIIME mapping file
 #and store them in a varriable called samples
 

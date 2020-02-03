@@ -1,0 +1,4 @@
+Bacillus weihenstephanensis strain DSM 11821
+Legionella pneumophila strain JCM 7571
+Pseudomonas alcaligenes strain NBRC 14159
+Pseudomonas stutzeri strain ATCC 17588

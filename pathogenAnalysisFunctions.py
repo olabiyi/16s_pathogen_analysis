@@ -1,65 +1,63 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Nov 24 21:12:23 2018
+# """
+# Created on Sat Nov 24 21:12:23 2018
 
-@author: Biyi
+# @author: Biyi
 
-In order to install and use modules like ecopy on Windows you'll need to 
-download and install visual studio 2015
+# In order to install and use modules like ecopy on Windows you'll need to 
+# download and install visual studio 2015
 
-1. From this link https://stackoverflow.com/questions/44290672/
-   how-to-download-visual-studio-community-edition-2015-not-2017
+# 1. From this link https://stackoverflow.com/questions/44290672/
+#    how-to-download-visual-studio-community-edition-2015-not-2017
 
-Downdload the web installer or iso for windows. 
-After this must have installed (it takes a few hours).
+# Downdload the web installer or iso for windows. 
+# After this must have installed (it takes a few hours).
 
-2. Then run the command 
-a. 'pip install msgpack' in the Anaconda prompt
-b. 'pip install ecopy' in the Anaconda prompt
+# 2. Then run the command 
+# a. 'pip install msgpack' in the Anaconda prompt
+# b. 'pip install ecopy' in the Anaconda prompt
 
-To get a work around version of scikit bio for Windows follow the instructions
- below:
+# To get a work around version of scikit bio for Windows follow the instructions
+#  below:
 
-1. Install Windows Visual Studio 2015 Community Edition with C++ SDK enabled to
-   meet the requirements of the compiler for installing the package(Scikit-Bio) 
-   from the link https://go.microsoft.com/fwlink/?LinkId=532606&clcid=0x409 
-   (web installer)
+# 1. Install Windows Visual Studio 2015 Community Edition with C++ SDK enabled to
+#    meet the requirements of the compiler for installing the package(Scikit-Bio) 
+#    from the link https://go.microsoft.com/fwlink/?LinkId=532606&clcid=0x409 
+#    (web installer)
 
-2. Download the latest source from the Scikit-bio Github repository  
-   https://github.com/biocore/scikit-bio/archive/master.zip.
+# 2. Download the latest source from the Scikit-bio Github repository  
+#    https://github.com/biocore/scikit-bio/archive/master.zip.
 
-3. Using a tool like 7-zip, unpack it into your python packages directory
-   (C:\Users\user\Anaconda3\pkgs).
+# 3. Using a tool like 7-zip, unpack it into your python packages directory
+#    (C:\Users\user\Anaconda3\pkgs).
 
-3. Open a command line client (cmd) and navigate to the source directory
-   i.e. the uzipped folder.
-   cd C:\Users\user\Anaconda3\pkgs\scikit-bio-master
+# 3. Open a command line client (cmd) and navigate to the source directory
+#    i.e. the uzipped folder.
+#    cd C:\Users\user\Anaconda3\pkgs\scikit-bio-master
 
 
-4. Using Notepad++ edit the setup.py file
-   "C:\Program Files (x86)\Notepad++\notepad++" setup.py
-  Find the line in which the variable ssw_extra_compile_args 
-  is defined and change it. You can comment on the previous version and 
-  redefine the variable in the new line:
+# 4. Using Notepad++ edit the setup.py file
+#    "C:\Program Files (x86)\Notepad++\notepad++" setup.py
+#   Find the line in which the variable ssw_extra_compile_args 
+#   is defined and change it. You can comment on the previous version and 
+#   redefine the variable in the new line:
 
-  #ssw_extra_compile_args = ['-Wno-error=declaration-after-statement']
-  ssw_extra_compile_args = []
+#   #ssw_extra_compile_args = ['-Wno-error=declaration-after-statement']
+#   ssw_extra_compile_args = []
 
-5. Save the changes, close the editor and start the installation with
-   this command:
-   python setup.py install
-  I hope you do not receive error messages.
+# 5. Save the changes, close the editor and start the installation with
+#    this command:
+#    python setup.py install
+#   I hope you do not receive error messages.
 
-6. Exit from the directory that you insatlled skbio into
-   cd C:\Users\user\Documents
+# 6. Exit from the directory that you insatlled skbio into
+#    cd C:\Users\user\Documents
 
-7. Open an Anaconda Python session (using the command python) and check if 
-   Scikit-Bio was installed correctly using print(skbio.art).
-   test insatllation
-  import skbio
-  print(skbio.art)
-
-"""
+# 7. Open an Anaconda Python session (using the command python) and check if 
+#    Scikit-Bio was installed correctly using print(skbio.art).
+#    test insatllation
+#   import skbio
+#   print(skbio.art) """
 
 import numpy as np
 import pandas as pd
@@ -175,15 +173,14 @@ def combined_results(files):
     
 def make_taxon_table(result_together, samples):
     """
-    Function to a pathogen taxon table
+    Function to make a pathogen taxon table
     """
     ##get a named list
-    ##result = dict(zip(taxon,SB_100)) #continue from here
     pathogens = pd.Series()
     for sample in samples:
         pathogens = pathogens.append(result_together[sample]['species']['species'])
 
-    # Get the unique genera    
+    # Get the unique species    
     pathogens = pathogens.unique()
     d = {'pathogens': pathogens}
     taxon_table = pd.DataFrame(d)

@@ -9,6 +9,8 @@
 #the version of QIIME used for the analysis was QIIME 1.9.1
 #the version of BLAST used for the analysis was ncbi-blast-2.7.1
 
+set -e
+
 #enter the necessary files and save them in variables
 echo "what are you searching for: "
 read search

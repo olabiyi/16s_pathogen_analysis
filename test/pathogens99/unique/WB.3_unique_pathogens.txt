@@ -1,0 +1,14 @@
+Acinetobacter baumannii strain DSM 30007
+Acinetobacter lwoffii strain DSM 2403
+Bacillus weihenstephanensis strain DSM 11821
+Enterococcus casseliflavus strain NBRC 100478
+Klebsiella pneumoniae strain JCM1662 
+Legionella pneumophila strain JCM 7571
+Pseudomonas aeruginosa strain NBRC 12689
+Pseudomonas alcaligenes strain IAM 12411
+Pseudomonas alcaligenes strain NBRC 14159
+Pseudomonas stutzeri strain ATCC 17588
+Staphylococcus capitis subsp. urealyticus strain
+Stenotrophomonas maltophilia strain ATCC 19861
+Streptococcus oralis strain ATCC 35037
+Streptococcus pseudopneumoniae strain 108 

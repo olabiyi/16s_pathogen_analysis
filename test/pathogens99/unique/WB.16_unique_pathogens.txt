@@ -1,0 +1,9 @@
+Haemophilus parainfluenzae strain CCUG 12836
+Legionella pneumophila strain JCM 7571
+Pseudomonas alcaligenes strain NBRC 14159
+Salmonella enterica subsp. houtenae strain
+Staphylococcus capitis subsp. urealyticus strain
+Staphylococcus hominis subsp. novobiosepticus strain
+Streptococcus oralis strain ATCC 35037
+Streptococcus salivarius strain ATCC 7073
+Streptococcus sinensis strain HKU4 

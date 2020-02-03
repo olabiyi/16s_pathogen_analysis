@@ -14,7 +14,7 @@
 #2 otu_table.biom - a biom table containg the list of all the OTUs and there  abundance values
 #3 seqs_otus.txt - a tab delimited text file containing the map of all the OTUs to their related sequences
 #4  seqs.fna - a fasta file generated after quality filtering and demultiplexing which contains the list of all sequences
-
+set -e
 #Get the user's inputs and save them in their respective variables 
 echo "What are you looking for? :"
 read search 
